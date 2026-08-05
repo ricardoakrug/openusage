@@ -42,8 +42,10 @@ enum KimiUsageMapper {
         return quotaLine(label: "Session", from: shortest.detail, periodDurationMs: shortest.periodMs)
     }
 
-    /// One `{limit, used, remaining, resetTime}` object as a bounded count meter. `used` is absent from
+    /// One `{limit, used, remaining, resetTime}` object as a percentage meter. `used` is absent from
     /// some payloads, so it falls back to `limit - remaining`; without either the meter is skipped.
+    /// Kimi reports raw request counts, but the meters read as percentages like every other quota
+    /// provider in the app, so the menu bar shows `59%` rather than a bare count.
     private static func quotaLine(
         label: String,
         from detail: [String: Any],
@@ -59,9 +61,9 @@ enum KimiUsageMapper {
         let resetsAt = (detail["resetTime"] as? String).flatMap(OpenUsageISO8601.date(from:))
         return .progress(
             label: label,
-            used: min(used, limit),
-            limit: limit,
-            format: .count(suffix: "requests"),
+            used: ProviderParse.clampPercent(used / limit * 100),
+            limit: 100,
+            format: .percent,
             resetsAt: resetsAt,
             periodDurationMs: periodDurationMs
         )

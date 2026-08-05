@@ -120,9 +120,9 @@ final class KimiUsageMapperTests: XCTestCase {
             return XCTFail("expected a session progress line")
         }
         XCTAssertEqual(label, "Session")
-        XCTAssertEqual(used, 139)
-        XCTAssertEqual(limit, 200)
-        XCTAssertEqual(format, .count(suffix: "requests"))
+        XCTAssertEqual(used, 69.5, accuracy: 0.001)   // 139 of 200 requests
+        XCTAssertEqual(limit, 100)
+        XCTAssertEqual(format, .percent)
         XCTAssertEqual(periodMs, 5 * 60 * 60 * 1000)
         XCTAssertNotNil(resetsAt)
 
@@ -131,8 +131,8 @@ final class KimiUsageMapperTests: XCTestCase {
             return XCTFail("expected a weekly progress line")
         }
         XCTAssertEqual(weeklyLabel, "Weekly")
-        XCTAssertEqual(weeklyUsed, 214)
-        XCTAssertEqual(weeklyLimit, 2048)
+        XCTAssertEqual(weeklyUsed, 10.449, accuracy: 0.001)   // 214 of 2048 requests
+        XCTAssertEqual(weeklyLimit, 100)
     }
 
     func testDerivesUsedFromRemainingWhenAbsent() throws {
@@ -143,8 +143,8 @@ final class KimiUsageMapperTests: XCTestCase {
         guard case .progress(_, let used, let limit, _, _, _, _) = mapped.lines.first else {
             return XCTFail("expected a progress line")
         }
-        XCTAssertEqual(used, 214)
-        XCTAssertEqual(limit, 2048)
+        XCTAssertEqual(used, 10.449, accuracy: 0.001)   // 2048 - 1834 = 214 used
+        XCTAssertEqual(limit, 100)
     }
 
     func testMapsWeeklyOnlyWhenNoWindowsReported() throws {
@@ -172,7 +172,7 @@ final class KimiUsageMapperTests: XCTestCase {
             return XCTFail("expected a session progress line")
         }
         XCTAssertEqual(label, "Session")
-        XCTAssertEqual(used, 139)
+        XCTAssertEqual(used, 69.5, accuracy: 0.001)
         XCTAssertEqual(periodMs, 5 * 60 * 60 * 1000)
     }
 

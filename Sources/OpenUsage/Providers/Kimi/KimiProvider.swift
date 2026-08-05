@@ -27,14 +27,12 @@ final class KimiProvider: ProviderRuntime {
 
     var widgetDescriptors: [WidgetDescriptor] {
         [
-            .boundedCount(id: "kimi.session", provider: provider, title: "Session",
-                          metricLabel: "Session", limit: 200, suffix: "requests",
-                          periodDurationMs: 5 * 60 * 60 * 1000)
-                .exportingLimit("session", unit: "requests"),
-            .boundedCount(id: "kimi.weekly", provider: provider, title: "Weekly",
-                          metricLabel: "Weekly", limit: 2048, suffix: "requests",
-                          periodDurationMs: 7 * 24 * 60 * 60 * 1000)
-                .exportingLimit("weekly", unit: "requests")
+            .percent(id: "kimi.session", provider: provider, title: "Session",
+                     metricLabel: "Session")
+                .exportingLimit("session", unit: "percent"),
+            .percent(id: "kimi.weekly", provider: provider, title: "Weekly",
+                     metricLabel: "Weekly")
+                .exportingLimit("weekly", unit: "percent")
         ]
     }
 
