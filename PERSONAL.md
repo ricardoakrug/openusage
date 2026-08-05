@@ -38,3 +38,4 @@ Every step that fails sends a macOS notification. The log is
 | Change | Why |
 | ------ | --- |
 | `PERSONAL.md` | Documents this setup. |
+| Kimi Code provider (`Sources/OpenUsage/Providers/Kimi/`) | Kimi Code runs daily here; upstream has no card for it. API key only. |
